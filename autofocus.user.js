@@ -32,10 +32,10 @@ const SITEINFO = [
 var AutoFocus = function(info) {
     var focus_element = getFocusElementByXpath(info.focus);
     focus_element.focus();
-    log('focus!');
 };
 
 var launchAutoFocus = function(list) {
+    add_focus_style();
     for (var i = 0; i < list.length; i++) {
 	try {
 	    if (!af && location.href.match(list[i].url) &&
@@ -77,6 +77,22 @@ var getsiteinfo = function(urls) {
 	}
     });
 };
+
+var add_focus_style = function() {
+    // based on http://userstyles.org/styles/305
+    var css = 'a:hover:active {color: #10bae0;}' +
+              'a:not(:hover):active {  color: #0000ff;}' +
+              '*:focus {-moz-outline: 4px solid -moz-rgba(16,186,224,0.3) !important;-moz-outline-offset: 1px !important;-moz-outline-radius: 3px !important;}' +
+              'button:focus,input[type="reset"]:focus,input[type="button"]:focus,input[type="submit"]:focus,input[type="file"] > input[type="button"]:focus {-moz-outline-radius: 5px !important;}' +
+              'button:focus::-moz-focus-inner {border-color: transparent !important;}' +
+              'button::-moz-focus-inner,input[type="reset"]::-moz-focus-inner,input[type="button"]::-moz-focus-inner,input[type="submit"]::-moz-focus-inner,input[type="file"] > input[type="button"]::-moz-focus-inner {border: 1px dotted transparent !important;}' +
+              'textarea:focus, button:focus, select:focus, input:focus {-moz-outline-offset: -1px !important;}' +
+              'input[type="radio"]:focus {-moz-outline-radius: 12px;-moz-outline-offset: 0px !important;}' +
+              'a:focus {-moz-outline-offset: 0px !important;}';
+
+    addstyle(css);
+};
+
 
 // utility SITE_INFO
 function parseInfo(str) {
@@ -189,6 +205,15 @@ function getElementsByXPath(xpath, node) {
     }
     return (data.length >= 1) ? data : null;
 }
+
+//this code based ldrize.user.js
+function addstyle(css) { 
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'data:text/css,' + escape(css);
+    document.documentElement.childNodes[0].appendChild(link);
+}
+
 
 function log(message) {
     GM_log(message);
