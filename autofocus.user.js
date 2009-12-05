@@ -4,7 +4,7 @@
 // @description	  auto focus on where you wish
 // @include       http://*
 // @include	  https://*
-// @version       0.0.5
+// @version       0.0.6
 // ==/UserScript==
 //
 // this script based on autopagerize.user.js
