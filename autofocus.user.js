@@ -36,17 +36,20 @@ var AutoFocus = function(info) {
 
 var launchAutoFocus = function(list) {
     add_focus_style();
-    for (var i = 0; i < list.length; i++) {
-	try {
-	    if (!af && location.href.match(list[i].url) &&
-		getFocusElementByXpath(list[i].focus)) {
-		af = new AutoFocus(list[i]);
+    if (!reloaded()) {
+        for (var i = 0; i < list.length; i++) {
+            try {
+	        if (!af && location.href.match(list[i].url) &&
+	            getFocusElementByXpath(list[i].focus)) {
+		    af = new AutoFocus(list[i]);
+                    window.name = window.location.href;
+	            }
+	        }
+	    catch(e) {
+	        log(e);
+	        continue;
 	    }
-	}
-	catch(e) {
-	    log(e);
-	    continue;
-	}
+        }
     }
 };
 
@@ -214,6 +217,9 @@ function addstyle(css) {
     document.documentElement.childNodes[0].appendChild(link);
 }
 
+function reloaded() {
+    return window.name == window.location.href ? true : false;
+}
 
 function log(message) {
     GM_log(message);
