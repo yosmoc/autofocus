@@ -4,7 +4,7 @@
 // @description	  auto focus on where you wish
 // @include       http://*
 // @include	  https://*
-// @version       0.0.6
+// @version       0.0.7
 // ==/UserScript==
 //
 // this script based on autopagerize.user.js
@@ -41,11 +41,10 @@ var launchAutoFocus = function(list) {
             try {
 	        if (!af && location.href.match(list[i].url) &&
 	            getFocusElementByXpath(list[i].focus)) {
-		    af = new AutoFocus(list[i]);
-                    window.name = window.location.href;
-	            }
+		        af = new AutoFocus(list[i]);
 	        }
-	    catch(e) {
+                window.name = window.location.href;
+	    } catch(e) {
 	        log(e);
 	        continue;
 	    }
@@ -155,12 +154,13 @@ function getCacheCallback(res, url) {
 	    urls   : url,
 	    expire : new Date(new Date().getTime() + CACHE_EXPIRE),
 	    info   : info
-	}
+	};
 	GM_setValue('cacheInfo', cacheInfo.toSource());
         log('cache!');
 
 	if (!af && !!matched) {
 	    af = new AutoFocus(matched);
+            window.name = window.location.href;
 	}
     }
 }
